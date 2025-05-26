@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>姓名筆劃顯示</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      text-align: center;
+    }
+    .input-area {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .name-display {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 3rem;
+      flex-wrap: wrap;
+    }
+    .char-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .strokes {
+      font-size: 1.2rem;
+      color: #555;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>姓名筆劃顯示</h1>
+  <div class="input-area">
+    <input type="text" id="nameInput" placeholder="請輸入中文姓名">
+    <button id="displayBtn">顯示</button>
+  </div>
+  <div class="name-display" id="displayArea"></div>
+
+  <script type="module">
+    import { getStroke } from './zh-stroke-data.js';
+
+    document.getElementById('displayBtn').addEventListener('click', () => {
+      const name = document.getElementById('nameInput').value.trim();
+      const displayArea = document.getElementById('displayArea');
+      displayArea.innerHTML = '';
+
+      if (!name) return;
+
+      for (let char of name) {
+        const strokes = getStroke(char);
+        const block = document.createElement('div');
+        block.className = 'char-block';
+
+        const charSpan = document.createElement('span');
+        charSpan.textContent = char;
+
+        const strokeSpan = document.createElement('span');
+        strokeSpan.className = 'strokes';
+        strokeSpan.textContent = `筆劃：${strokes}`;
+
+        block.appendChild(charSpan);
+        block.appendChild(strokeSpan);
+
+        displayArea.appendChild(block);
+      }
+    });
+  </script>
+</body>
+</html>
